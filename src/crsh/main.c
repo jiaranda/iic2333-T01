@@ -22,9 +22,9 @@ void run()
     int retval;
     int status;
 
-    printf("PARENT pid: %d\n", getpid());
+    // printf("PARENT pid: %d\n", getpid());
     childpid = fork();
-    printf("CHILD pid: %d\n", getpid());
+    // printf("CHILD pid: %d\n", getpid());
     
     if (childpid == 0)
     {
@@ -37,20 +37,20 @@ void run()
     }
     else
     {
-      printf("PARENT waiting for child...\n");
+      // printf("PARENT waiting for child...\n");
       pid_t exited_child = wait(&status);
-      printf("PARENT: child's exit code: %d\n", WEXITSTATUS(status));
+      // printf("PARENT: child's exit code: %d\n", WEXITSTATUS(status));
     }
 
 
-    printf("Command: %s\n", args->command);
-    printf("Argc:    %i\n", args->argc);
-    printf("Argv:    ");
-    for (size_t i = 0; i < args->argc; i++)
-    {
-      printf("%s ", args->argv[i]);
-    }
-    printf("\n");
+    // printf("Command: %s\n", args->command);
+    // printf("Argc:    %i\n", args->argc);
+    // printf("Argv:    ");
+    // for (size_t i = 0; i < args->argc; i++)
+    // {
+    //   printf("%s ", args->argv[i]);
+    // }
+    // printf("\n");
   }
 
   args_destroy(args);

@@ -35,12 +35,6 @@ void run()
       }
       exit(123);
     }
-    else
-    {
-      // printf("PARENT waiting for child...\n");
-      pid_t exited_child = wait(&status);
-      // printf("PARENT: child's exit code: %d\n", WEXITSTATUS(status));
-    }
 
 
     // printf("Command: %s\n", args->command);

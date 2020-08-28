@@ -1,4 +1,5 @@
 #include "args/args.h"
+#include "list/list.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -10,6 +11,7 @@
 void run()
 {
   Args* args = args_init();
+  node_t* pid_list = init_list();
 
   while (true)
   {
@@ -19,14 +21,12 @@ void run()
     // Ejemplo de como utilizar el struct
 
     pid_t childpid;
-    int retval;
-    int status;
 
     // printf("PARENT pid: %d\n", getpid());
     childpid = fork();
     // printf("CHILD pid: %d\n", getpid());
     
-    if (childpid == 0)
+    if (childpid == 0) // child
     {
       // execlp(args -> command, args -> command, args->argv[0], NULL);
       if (strcmp(args -> command, "crexec")==0)
@@ -35,6 +35,12 @@ void run()
       }
       exit(123);
     }
+    else
+    {
+      push(pid_list, childpid);
+      print_list(pid_list);
+    }
+    
 
 
     // printf("Command: %s\n", args->command);

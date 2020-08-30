@@ -11,8 +11,6 @@
 void run()
 {
   Args* args = args_init();
-  node_t* pid_list = init_list();
-
   while (true)
   {
     // Leemos la consola
@@ -37,8 +35,7 @@ void run()
     }
     else
     {
-      push(pid_list, childpid);
-      print_list(pid_list);
+
     }
     
 

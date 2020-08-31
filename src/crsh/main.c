@@ -1,5 +1,4 @@
 #include "args/args.h"
-#include "list/list.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -8,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include "exit/exit.h"
 
 void run()
 {
@@ -19,7 +19,18 @@ void run()
     args_get(args);
     list_clean(pid_list);
 
-
+    if (strcmp(args -> command, "crexit")==0)
+    {
+      printf("sending sigint\n");
+      send_sigint(pid_list);
+      sleep(15);
+      list_clean(pid_list);
+      printf("sending sigkill\n");
+      send_sigkill(pid_list);
+      printf("free memory\n");
+      list_destroy(pid_list);
+      exit(0);
+    }
     
     
 

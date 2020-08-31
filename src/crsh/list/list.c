@@ -53,26 +53,6 @@ void list_destroy(List* list)
   free(list);
 }
 
-void list_add_process(List* list, Process* process)
-{
-  list_clean(list);
-  for (int i = 0; i < 255; i++) 
-  {
-    if (!list -> data[i]) 
-    {
-      list -> data[i] = process;
-      return;
-    }
-    printf("Process limit reached!");
-  }
-}
-
-void process_print(Process* process)
-{
-  if (!process) return;
-  printf("%d - %s - %f seconds\n", process -> pid, process -> name, difftime(process -> initial_time, time(NULL)));
-}
-
 void list_clean(List* list)
 {
   for (int i = 0; i < 255; i++) 
@@ -95,9 +75,28 @@ void list_clean(List* list)
   }
 }
 
+void list_add_process(List* list, Process* process)
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (!list -> data[i]) 
+    {
+      list -> data[i] = process;
+      return;
+    }
+  }
+}
+
+void process_print(Process* process)
+{
+  if (!process) return;
+  printf("%d - %s - %f seconds\n", process -> pid, process -> name, difftime(time(NULL), process -> initial_time));
+}
+
+
+
 void list_print(List* list)
 {
-  list_clean(list);
   printf("\npid - name - time\n");
   for (int i = 0; i < 255; i++) 
   {

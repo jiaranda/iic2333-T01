@@ -15,12 +15,13 @@ void run()
   while (true)
   {
     // Leemos la consola
+    // printf("prompt my pid: %d\n",getpid());
     args_get(args);
 
     // Ejemplo de como utilizar el struct
 
     pid_t childpid;
-
+    list_clean(pid_list);
     // printf("PARENT pid: %d\n", getpid());
     childpid = fork();
     // printf("CHILD pid: %d\n", getpid());
@@ -32,10 +33,13 @@ void run()
       if (strcmp(args -> command, "crexec")==0)
       {
         execvp(args -> argv[0], args -> argv);
+        printf("Error executing your command");
+        exit(0);
       }
       if (strcmp(args -> command, "crlist")==0)
       {
         list_print(pid_list);
+        exit(0);
       }
     }
     else

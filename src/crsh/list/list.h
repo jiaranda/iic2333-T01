@@ -14,6 +14,7 @@ typedef struct list {
 
 Process* process_init(char* name, pid_t pid);
 List* list_init();
+void list_clean(List* list);
 void list_data_destroy(List* list);
 void list_destroy(List* list);
 void list_add_process(List* list, Process* process);

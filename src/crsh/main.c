@@ -11,6 +11,7 @@
 void run()
 {
   Args* args = args_init();
+  List* pid_list = list_init();
   while (true)
   {
     // Leemos la consola
@@ -24,6 +25,7 @@ void run()
     childpid = fork();
     // printf("CHILD pid: %d\n", getpid());
     
+    
     if (childpid == 0) // child
     {
       // execlp(args -> command, args -> command, args->argv[0], NULL);
@@ -31,15 +33,19 @@ void run()
       {
         execvp(args -> argv[0], args -> argv);
       }
-      exit(123);
+      if (strcmp(args -> command, "crlist")==0)
+      {
+        list_print(pid_list);
+      }
     }
     else
     {
-
+      if (strcmp(args -> command, "crexec")==0)
+      {
+        Process* process = process_init(args -> argv[0], childpid);
+        list_add_process(pid_list, process);
+      }
     }
-    
-
-
     // printf("Command: %s\n", args->command);
     // printf("Argc:    %i\n", args->argc);
     // printf("Argv:    ");

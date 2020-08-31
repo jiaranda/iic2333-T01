@@ -1,0 +1,76 @@
+#include <time.h>
+#include "list.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+Process* process_init(char* name, pid_t pid)
+{
+  Process* process = malloc(sizeof(Process));
+  process -> name = malloc(strlen(name) + 1);
+  strcpy(process -> name, name);
+  process -> pid = pid;
+  process -> initial_time = time(NULL);
+  return process;
+}
+
+List* list_init()
+{
+  List* list = malloc(sizeof(List));
+  for (int i = 0; i < 255; i++)
+  {
+    list -> data[i] = NULL;
+  }
+  return list;
+}
+
+void list_data_destroy(List* list) 
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (list -> data[i]) 
+    {
+      free(list -> data[i]);
+    }
+  }
+}
+
+void list_destroy(List* list) 
+{
+  if (!list)
+  {
+    return;
+  }
+  list_data_destroy(list);
+  free(list);
+}
+
+void list_add_process(List* list, Process* process)
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (!list -> data[i]) 
+    {
+      list -> data[i] = process;
+      return;
+    }
+  }
+}
+
+void process_print(Process* process)
+{
+  if (!process) return;
+  printf("%d - %s - %f seconds\n", process -> pid, process -> name, difftime(process -> initial_time, time(NULL)));
+}
+
+void list_print(List* list)
+{
+  printf("\npid - name - time\n");
+  for (int i = 0; i < 255; i++) 
+  {
+    if (list -> data[i]) 
+    {
+      process_print(list -> data[i]);
+    }
+  }
+}

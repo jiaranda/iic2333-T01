@@ -39,7 +39,7 @@ void list_data_destroy(List* list)
   {
     if (list -> data[i]) 
     {
-      free(list -> data[i]);
+      process_destroy(list -> data[i]);
     }
   }
 }

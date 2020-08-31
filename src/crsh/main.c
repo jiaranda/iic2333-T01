@@ -9,11 +9,34 @@
 #include <errno.h>
 #include "exit/exit.h"
 
+List* pid_list;
+
+void handle_sigint()
+{
+  printf("sending sigint\n");
+  send_sigint(pid_list);
+  time_t initial_time = time(NULL);
+  while (difftime(time(NULL), initial_time) < 15)
+  {
+    list_clean(pid_list);
+    if(list_empty(pid_list))
+    {
+      exit(0);
+    }
+  }
+  printf("sending sigkill\n");
+  send_sigkill(pid_list);
+  printf("free memory\n");
+  list_destroy(pid_list);
+  exit(0);
+}
+
 void run()
 {
   Args* args = args_init();
-  List* pid_list = list_init();
+  pid_list = list_init();
   bool continue_program = true;
+
   while (continue_program == true)
   {
     args_get(args);
@@ -21,22 +44,7 @@ void run()
 
     if (strcmp(args -> command, "crexit")==0)
     {
-      printf("sending sigint\n");
-      send_sigint(pid_list);
-      time_t initial_time = time(NULL);
-      while (difftime(time(NULL), initial_time) < 15)
-      {
-        list_clean(pid_list);
-        if(list_empty(pid_list))
-        {
-          exit(0);
-        }
-      }
-      printf("sending sigkill\n");
-      send_sigkill(pid_list);
-      printf("free memory\n");
-      list_destroy(pid_list);
-      exit(0);
+      handle_sigint();
     }
     
     
@@ -95,6 +103,7 @@ void run()
 
 int main()
 {
+  signal(SIGINT, handle_sigint);
   run();
   return 0;
 }

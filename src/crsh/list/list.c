@@ -120,5 +120,6 @@ bool pid_exists(List* list, pid_t pid)
       }
     }
   }
+  printf("The process with pid %d is not a child of crsh.", pid);
   return false;
 }

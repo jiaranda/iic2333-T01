@@ -23,8 +23,15 @@ void run()
     {
       printf("sending sigint\n");
       send_sigint(pid_list);
-      sleep(15);
-      list_clean(pid_list);
+      time_t initial_time = time(NULL);
+      while (difftime(time(NULL), initial_time) < 15)
+      {
+        list_clean(pid_list);
+        if(list_empty(pid_list))
+        {
+          exit(0);
+        }
+      }
       printf("sending sigkill\n");
       send_sigkill(pid_list);
       printf("free memory\n");

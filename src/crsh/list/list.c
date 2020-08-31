@@ -123,3 +123,15 @@ bool pid_exists(List* list, pid_t pid)
   printf("The process with pid %d is not a child of crsh.", pid);
   return false;
 }
+
+bool list_empty(List* list)
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (list -> data[i]) 
+    {
+      return false;
+    }
+  }
+  return true;
+}

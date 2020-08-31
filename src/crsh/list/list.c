@@ -2,6 +2,7 @@
 #include "list.h"
 #include <string.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <stdio.h>
 
 Process* process_init(char* name, pid_t pid)
@@ -12,6 +13,13 @@ Process* process_init(char* name, pid_t pid)
   process -> pid = pid;
   process -> initial_time = time(NULL);
   return process;
+}
+
+void process_destroy(Process* process)
+{
+  if(!process) return;
+  free(process -> name);
+  free(process);
 }
 
 List* list_init()
@@ -47,6 +55,7 @@ void list_destroy(List* list)
 
 void list_add_process(List* list, Process* process)
 {
+  list_clean(list);
   for (int i = 0; i < 255; i++) 
   {
     if (!list -> data[i]) 
@@ -54,6 +63,7 @@ void list_add_process(List* list, Process* process)
       list -> data[i] = process;
       return;
     }
+    printf("Process limit reached!");
   }
 }
 
@@ -63,8 +73,31 @@ void process_print(Process* process)
   printf("%d - %s - %f seconds\n", process -> pid, process -> name, difftime(process -> initial_time, time(NULL)));
 }
 
+void list_clean(List* list)
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (list -> data[i]) 
+    {
+      // idea from
+      // https://support.sas.com/documentation/onlinedoc/sasc/doc/lr2/waitpid.htm
+      int status;
+      pid_t pid = list -> data[i] -> pid;
+      pid_t endID;
+      endID = waitpid(pid, &status, WNOHANG);
+      if (endID != 0) // not running
+      {
+        process_destroy(list -> data[i]);
+        list -> data[i] = NULL;
+      }
+      
+    }
+  }
+}
+
 void list_print(List* list)
 {
+  list_clean(list);
   printf("\npid - name - time\n");
   for (int i = 0; i < 255; i++) 
   {

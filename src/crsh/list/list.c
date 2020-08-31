@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 Process* process_init(char* name, pid_t pid)
 {
@@ -105,4 +106,19 @@ void list_print(List* list)
       process_print(list -> data[i]);
     }
   }
+}
+
+bool pid_exists(List* list, pid_t pid)
+{
+  for (int i = 0; i < 255; i++) 
+  {
+    if (list -> data[i]) 
+    {
+      if (list -> data[i] -> pid == pid)
+      {
+        return true;
+      }
+    }
+  }
+  return false;
 }

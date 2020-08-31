@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <time.h>
+#include <stdbool.h>
 
 typedef struct process {
   char* name;
@@ -20,3 +21,4 @@ void list_destroy(List* list);
 void list_add_process(List* list, Process* process);
 void process_print(Process* process);
 void list_print(List* list);
+bool pid_exists(List* list, pid_t pid);

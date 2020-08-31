@@ -41,6 +41,18 @@ void run()
         list_print(pid_list);
         exit(0);
       }
+      if (strcmp(args -> command, "crkill")==0)
+      {
+        pid_t pid_arg = atoi(args->argv[1]);
+        int sig = atoi(args->argv[0]);
+        if (pid_exists(pid_list, pid_arg))
+        {
+          kill(pid_arg, sig);
+        }
+        exit(0);
+      }
+      printf("Invalid command\n");
+      exit(0);
     }
     else
     {

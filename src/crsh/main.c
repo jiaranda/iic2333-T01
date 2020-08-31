@@ -16,17 +16,16 @@ void run()
   bool continue_program = true;
   while (continue_program == true)
   {
-    // Leemos la consola
-    // printf("prompt my pid: %d\n",getpid());
     args_get(args);
+    list_clean(pid_list);
 
-    // Ejemplo de como utilizar el struct
+
+    
+    
+
 
     pid_t childpid;
-    list_clean(pid_list);
-    // printf("PARENT pid: %d\n", getpid());
     childpid = fork();
-    // printf("CHILD pid: %d\n", getpid());
     
     
     if (childpid == 0) // child
@@ -53,7 +52,6 @@ void run()
         }
         exit(0);
       }
-      printf("Invalid command\n");
       exit(0);
     }
     else
